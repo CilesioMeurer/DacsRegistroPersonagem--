@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:include="layout :: htmlhead"></head>
+	<body>
+	<div class="container">
+		<nav th:replace="layout :: menu">(menu)</nav>
+		<a href="form.html" th:href="@{/usuario/novo}" class="btn btn-primary btn-lg" role="button">Novo</a>
+		<table class="table" id="usuario">
+			<thead class="thead-light"> 
+				<tr>
+					<th scope="col">Nome do personagem</th>
+					<th scope="col">Obra</th>
+					<th scope="col">Estilo</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr scope="row" th:each="umusuario : ${usuario}">
+					<td th:text="${umusuario.nomepersonagem}"></td>
+					<td th:text="${umuusario.nomeobra}"></td>
+					<td th:text="${umusuario.estilo}"></td>
+					<td><a th:href="@{'/usuario/alterar/' + ${umusuario.id}}" class="btn btn-primary btn-lg">Alterar</a>
+					<button class='btn btn-second btn-lg js-delete'th:data-customer-id="@{umusuario.id}">Delete</button></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		<div th:include="layout :: footer" id="footer">(footer)</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#usuarios").on("click", ".js-delete", function () {
+					var button = $(this);
+					
+					bootbox.confirm("Tem certeza que deseja excluir este personagem?", 
+							function (result){
+						if (result) {
+							$.ajax({
+								url: "/usuario/remover/" +
+									button.attr("data-customer-id"),
+								method:"GET",
+								success: function () {
+									window.location.href = "/usuario"
+								}
+							});
+						}
+						
+					});
+				});
+			});
+		</script>
+		
+	</body>
+</html>
